@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Angebot anfordern | Richiesta preventivo</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f0;min-height:100vh;padding:1rem}
+.wrap{max-width:440px;margin:0 auto}
+.logo-bar{text-align:center;padding:1rem 0 1.5rem;color:#444}
+.logo-bar h1{font-size:18px;font-weight:600;color:#222}
+.logo-bar p{font-size:13px;color:#888;margin-top:4px}
+.lang-toggle{display:flex;gap:8px;margin-bottom:1.25rem}
+.lang-btn{flex:1;padding:10px;border:1px solid #ddd;border-radius:10px;background:#fff;font-size:14px;cursor:pointer;transition:all .15s;font-weight:500}
+.lang-btn.active{background:#e8f4fd;color:#1a6fb5;border-color:#90c4f0}
+.progress{display:flex;align-items:center;gap:6px;margin-bottom:1.25rem}
+.dot{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;border:1px solid #ddd;background:#fff;color:#aaa;flex-shrink:0}
+.dot.active{background:#1a6fb5;color:#fff;border-color:#1a6fb5}
+.dot.done{background:#1a9e75;color:#fff;border-color:#1a9e75}
+.line{flex:1;height:1px;background:#e0e0e0}
+.card{background:#fff;border-radius:14px;padding:1.25rem;margin-bottom:1rem;border:1px solid #e8e8e8}
+.section-title{font-size:16px;font-weight:600;color:#1a1a1a;margin-bottom:3px}
+.section-sub{font-size:13px;color:#888;margin-bottom:1.1rem}
+.field{margin-bottom:1rem}
+.field label{display:block;font-size:13px;color:#555;margin-bottom:6px;font-weight:500}
+.field input,.field select,.field textarea{width:100%;font-size:15px;border:1px solid #ddd;border-radius:10px;padding:11px 13px;background:#fff;color:#111;outline:none;transition:border .15s}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:#1a6fb5;box-shadow:0 0 0 3px rgba(26,111,181,.08)}
+.field textarea{min-height:90px;resize:vertical}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem}
+.opt{border:1px solid #e0e0e0;border-radius:10px;padding:12px 8px;cursor:pointer;text-align:center;background:#fff;transition:all .15s}
+.opt:active{transform:scale(0.97)}
+.opt.sel{border:2px solid #1a6fb5;background:#e8f4fd}
+.opt i{font-size:22px;color:#aaa;display:block;margin-bottom:5px}
+.opt.sel i{color:#1a6fb5}
+.opt span{font-size:12px;color:#333;font-weight:500;display:block;line-height:1.3}
+.opt small{font-size:11px;color:#aaa;display:block;margin-top:2px}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid #f0f0f0}
+.toggle-row:last-child{border-bottom:none}
+.toggle-label{font-size:14px;color:#222}
+.sw{width:44px;height:24px;background:#d0d0d0;border-radius:12px;position:relative;cursor:pointer;transition:background .2s;flex-shrink:0}
+.sw.on{background:#1a9e75}
+.sw::after{content:'';width:20px;height:20px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.sw.on::after{left:22px}
+.tile-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tile-opt{border:1px solid #e0e0e0;border-radius:10px;padding:10px;cursor:pointer;background:#fff;transition:all .15s}
+.tile-opt.sel{border:2px solid #1a6fb5;background:#e8f4fd}
+.tile-swatch{height:52px;border-radius:8px;margin-bottom:8px}
+.tile-label{font-size:12px;font-weight:600;color:#222}
+.tile-price{font-size:11px;color:#888;margin-top:2px}
+.sum-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f5f5f5;font-size:14px}
+.sum-row:last-child{border-bottom:none;padding-top:12px;font-weight:600;font-size:15px}
+.sum-key{color:#888}
+.sum-val{color:#222;text-align:right;max-width:60%}
+.nav{display:flex;gap:10px;margin-top:1rem;padding-bottom:2rem}
+.btn{flex:1;padding:14px;border:1px solid #ddd;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;background:#fff;color:#333;transition:all .15s}
+.btn:active{transform:scale(0.98)}
+.btn-primary{background:#1a6fb5;color:#fff;border-color:#1a6fb5}
+.btn-primary:active{background:#155d9e}
+.btn:disabled{opacity:.4;cursor:default}
+.step{display:none}
+.step.active{display:block}
+.success{text-align:center;padding:2rem 1rem}
+.success i{font-size:56px;color:#1a9e75;display:block;margin-bottom:1rem}
+.success h2{font-size:20px;font-weight:600;color:#1a1a1a;margin-bottom:8px}
+.success p{font-size:14px;color:#888;line-height:1.6}
+.angebot-nr{font-size:12px;color:#aaa;margin-top:1rem;font-family:monospace}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo-bar">
+    <h1 id="t-headline">Angebot anfordern</h1>
+    <p id="t-subline">Fliesen &amp; Bodenbeläge • Burggrafenamt</p>
+  </div>
+
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('de')">🇩🇪 Deutsch</button>
+    <button class="lang-btn" onclick="setLang('it')">🇮🇹 Italiano</button>
+  </div>
+
+  <div class="progress">
+    <div class="dot active" id="d1">1</div><div class="line"></div>
+    <div class="dot" id="d2">2</div><div class="line"></div>
+    <div class="dot" id="d3">3</div><div class="line"></div>
+    <div class="dot" id="d4">4</div>
+  </div>
+
+  <!-- STEP 1: Kontakt -->
+  <div id="s1" class="step active">
+    <div class="card">
+      <p class="section-title" id="t-s1">Kontaktdaten</p>
+      <p class="section-sub" id="t-s1s">Ihre Angaben für das Angebot</p>
+      <div class="field"><label id="t-name">Name / Firma</label><input id="f-name" type="text" placeholder="Max Mustermann"></div>
+      <div class="field"><label id="t-tel">Telefon</label><input id="f-tel" type="tel" placeholder="+39 340 ..."></div>
+      <div class="field"><label id="t-email">E-Mail</label><input id="f-email" type="email" placeholder="max@beispiel.it"></div>
+      <div class="field"><label id="t-addr">Adresse des Objekts</label><input id="f-addr" type="text" placeholder="Musterstraße 5, Meran"></div>
+    </div>
+  </div>
+
+  <!-- STEP 2: Raum -->
+  <div id="s2" class="step">
+    <div class="card">
+      <p class="section-title" id="t-s2">Wo wird gefliest?</p>
+      <p class="section-sub" id="t-s2s">Raum und Zugang</p>
+      <label style="font-size:13px;color:#555;font-weight:500;display:block;margin-bottom:8px" id="t-room">Raumtyp</label>
+      <div class="grid2">
+        <div class="opt" onclick="sel(this,'room')" data-v="Badezimmer"><i class="ti ti-bath"></i><span id="r-bad">Badezimmer</span></div>
+        <div class="opt" onclick="sel(this,'room')" data-v="Küche"><i class="ti ti-cooking-pot"></i><span id="r-kue">Küche</span></div>
+        <div class="opt" onclick="sel(this,'room')" data-v="Vorraum"><i class="ti ti-door-enter"></i><span id="r-vor">Vorraum / Eingang</span></div>
+        <div class="opt" onclick="sel(this,'room')" data-v="Terrasse"><i class="ti ti-plant-2"></i><span id="r-ter">Terrasse / Außen</span></div>
+        <div class="opt" onclick="sel(this,'room')" data-v="Wohnung"><i class="ti ti-home-2"></i><span id="r-woh">Ganze Wohnung</span></div>
+        <div class="opt" onclick="sel(this,'room')" data-v="Sonstiges"><i class="ti ti-dots"></i><span id="r-son">Sonstiges</span></div>
+      </div>
+      <div class="field"><label id="t-sqm">Fläche in m²</label><input id="f-sqm" type="number" placeholder="z.B. 18" min="1"></div>
+      <label style="font-size:13px;color:#555;font-weight:500;display:block;margin-bottom:8px" id="t-floor">Stockwerk</label>
+      <div class="grid2">
+        <div class="opt" onclick="sel(this,'floor');showStock(false)" data-v="Erdgeschoss"><i class="ti ti-building"></i><span id="f-eg">Erdgeschoss</span><small id="f-egs">Auto bis Haustür</small></div>
+        <div class="opt" onclick="sel(this,'floor');showStock(true)" data-v="Obergeschoss"><i class="ti ti-building-skyscraper"></i><span id="f-og">Obergeschoss</span><small id="f-ogs">Stock angeben</small></div>
+      </div>
+      <div id="stock-wrap" style="display:none;margin-top:8px">
+        <div class="field"><label id="t-stock">Stockwerk Nr.</label>
+          <div style="display:flex;gap:12px;align-items:center">
+            <input id="f-stock" type="number" min="1" max="20" placeholder="1" style="width:90px">
+            <div class="sw" id="sw-lift" onclick="this.classList.toggle('on')"></div>
+            <span style="font-size:13px;color:#555" id="t-lift">Mit Aufzug</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3: Details -->
+  <div id="s3" class="step">
+    <div class="card">
+      <p class="section-title" id="t-s3">Schneiden &amp; Fliesen</p>
+      <p class="section-sub" id="t-s3s">Arbeitsvoraussetzungen</p>
+      <div class="toggle-row"><span class="toggle-label" id="t-cut">Schneideplatz vorhanden?</span><div class="sw" id="sw-cut" onclick="this.classList.toggle('on')"></div></div>
+      <div class="toggle-row"><span class="toggle-label" id="t-own">Fliesen vom Kunden</span><div class="sw" id="sw-own" onclick="this.classList.toggle('on')"></div></div>
+      <div class="toggle-row"><span class="toggle-label" id="t-abd">Abdichtung nötig?</span><div class="sw" id="sw-abd" onclick="this.classList.toggle('on')"></div></div>
+      <div class="toggle-row"><span class="toggle-label" id="t-soc">Sockelleisten</span><div class="sw" id="sw-soc" onclick="this.classList.toggle('on')"></div></div>
+      <div class="toggle-row"><span class="toggle-label" id="t-alt">Alte Fliesen entfernen</span><div class="sw" id="sw-alt" onclick="this.classList.toggle('on')"></div></div>
+    </div>
+    <div class="card">
+      <p class="section-title" id="t-tile">Fliesenwunsch</p>
+      <p class="section-sub" id="t-tiles">Preisklasse (Material)</p>
+      <div class="tile-grid">
+        <div class="tile-opt" onclick="sel(this,'tile')" data-v="Basis">
+          <div class="tile-swatch" style="background:linear-gradient(135deg,#d5cfc8,#bfb9b2)"></div>
+          <div class="tile-label" id="ti-b">Basis</div>
+          <div class="tile-price">ca. 15–30 €/m²</div>
+        </div>
+        <div class="tile-opt" onclick="sel(this,'tile')" data-v="Komfort">
+          <div class="tile-swatch" style="background:linear-gradient(135deg,#c9b99a,#b5a07e)"></div>
+          <div class="tile-label" id="ti-k">Komfort</div>
+          <div class="tile-price">ca. 30–60 €/m²</div>
+        </div>
+        <div class="tile-opt" onclick="sel(this,'tile')" data-v="Premium">
+          <div class="tile-swatch" style="background:linear-gradient(135deg,#8a9eb0,#6d8495)"></div>
+          <div class="tile-label" id="ti-p">Premium</div>
+          <div class="tile-price">ca. 60–120 €/m²</div>
+        </div>
+        <div class="tile-opt" onclick="sel(this,'tile')" data-v="Eigene">
+          <div class="tile-swatch" style="background:#f0f0f0;display:flex;align-items:center;justify-content:center"><i class="ti ti-package" style="font-size:28px;color:#bbb"></i></div>
+          <div class="tile-label" id="ti-e">Eigene Fliesen</div>
+          <div class="tile-price" id="ti-es">Bereits vorhanden</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4: Zusammenfassung -->
+  <div id="s4" class="step">
+    <div class="card">
+      <p class="section-title" id="t-s4">Zusammenfassung</p>
+      <p class="section-sub" id="t-s4s">Bitte überprüfen Sie Ihre Angaben</p>
+      <div id="sum"></div>
+    </div>
+    <div class="card" style="background:#fafaf8">
+      <div class="field"><label id="t-note">Anmerkungen / Besonderheiten</label><textarea id="f-note" placeholder="z.B. Alte Fliesen müssen entfernt werden, besonderes Fliesenmuster..."></textarea></div>
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div id="s5" class="step">
+    <div class="card success">
+      <i class="ti ti-circle-check"></i>
+      <h2 id="t-ok">Anfrage gesendet!</h2>
+      <p id="t-ok2">Wir melden uns so bald wie möglich mit Ihrem Angebot.</p>
+      <p class="angebot-nr" id="t-nr"></p>
+    </div>
+  </div>
+
+  <div class="nav" id="nav-bar">
+    <button class="btn" id="btn-back" onclick="back()" style="display:none">Zurück</button>
+    <button class="btn btn-primary" id="btn-next" onclick="next()">Weiter →</button>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL='https://vqzbroxmhuwqqavthpsq.supabase.co';
+const ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZxemJyb3htaHV3cXFhdnRocHNxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE1NjI4OTYsImV4cCI6MjA5NzEzODg5Nn0.KrCOVbJvFpuKcl19Rj-cwgSziK_I4M9gjaH49nX6Tyg';
+
+const T={
+  de:{headline:'Angebot anfordern',subline:'Fliesen & Bodenbeläge • Burggrafenamt',
+    s1:'Kontaktdaten',s1s:'Ihre Angaben für das Angebot',
+    name:'Name / Firma',tel:'Telefon',email:'E-Mail',addr:'Adresse des Objekts',
+    s2:'Wo wird gefliest?',s2s:'Raum und Zugang',room:'Raumtyp',
+    'r-bad':'Badezimmer','r-kue':'Küche','r-vor':'Vorraum / Eingang',
+    'r-ter':'Terrasse / Außen','r-woh':'Ganze Wohnung','r-son':'Sonstiges',
+    sqm:'Fläche in m²',floor:'Stockwerk',
+    'f-eg':'Erdgeschoss','f-egs':'Auto bis Haustür','f-og':'Obergeschoss','f-ogs':'Stock angeben',
+    stock:'Stockwerk Nr.',lift:'Mit Aufzug',
+    s3:'Schneiden & Fliesen',s3s:'Arbeitsvoraussetzungen',
+    cut:'Schneideplatz vorhanden?',own:'Fliesen vom Kunden',
+    abd:'Abdichtung nötig?',soc:'Sockelleisten',alt:'Alte Fliesen entfernen',
+    tile:'Fliesenwunsch',tiles:'Preisklasse (Material)',
+    'ti-b':'Basis','ti-k':'Komfort','ti-p':'Premium','ti-e':'Eigene Fliesen','ti-es':'Bereits vorhanden',
+    s4:'Zusammenfassung',s4s:'Bitte überprüfen Sie Ihre Angaben',note:'Anmerkungen / Besonderheiten',
+    ok:'Anfrage gesendet!',ok2:'Wir melden uns so bald wie möglich mit Ihrem Angebot.',
+    next:'Weiter →',back:'Zurück',send:'Angebot anfordern →',
+    ja:'Ja',nein:'Nein',
+    sk:{name:'Name',addr:'Adresse',room:'Raum',sqm:'Fläche',floor:'Stockwerk',
+        cut:'Schneideplatz',tile:'Fliesen',abd:'Abdichtung',soc:'Sockelleisten',alt:'Fliesen entfernen'}},
+  it:{headline:'Richiesta preventivo',subline:'Piastrelle & Pavimenti • Burgraviato',
+    s1:'Dati di contatto',s1s:'I suoi dati per il preventivo',
+    name:'Nome / Azienda',tel:'Telefono',email:'E-Mail',addr:"Indirizzo dell'immobile",
+    s2:'Dove si posa?',s2s:'Ambiente e accesso',room:'Tipo di locale',
+    'r-bad':'Bagno','r-kue':'Cucina','r-vor':'Ingresso / Corridoio',
+    'r-ter':'Terrazza / Esterno','r-woh':'Intero appartamento','r-son':'Altro',
+    sqm:'Superficie in m²',floor:'Piano',
+    'f-eg':'Piano terra','f-egs':"Auto fino all'ingresso",'f-og':'Piano superiore','f-ogs':'Indicare il piano',
+    stock:'Numero piano',lift:'Con ascensore',
+    s3:'Taglio & Piastrelle',s3s:'Condizioni di lavoro',
+    cut:'Spazio di taglio disponibile?',own:'Piastrelle del cliente',
+    abd:'Impermeabilizzazione necessaria?',soc:'Battiscopa',alt:'Rimozione vecchie piastrelle',
+    tile:'Preferenza piastrelle',tiles:'Fascia di prezzo (materiale)',
+    'ti-b':'Base','ti-k':'Comfort','ti-p':'Premium','ti-e':'Piastrelle proprie','ti-es':'Già disponibili',
+    s4:'Riepilogo',s4s:'Si prega di verificare i suoi dati',note:'Note / Particolarità',
+    ok:'Richiesta inviata!',ok2:'La contatteremo al più presto con il suo preventivo.',
+    next:'Avanti →',back:'Indietro',send:'Richiedere preventivo →',
+    ja:'Sì',nein:'No',
+    sk:{name:'Nome',addr:'Indirizzo',room:'Locale',sqm:'Superficie',floor:'Piano',
+        cut:'Spazio taglio',tile:'Piastrelle',abd:'Impermeab.',soc:'Battiscopa',alt:'Rimozione'}}
+};
+
+let lang='de', step=1;
+const sel_map={};
+
+function t(k){return(T[lang][k]||T[lang].sk&&T[lang].sk[k]||k)}
+
+function setLang(l){
+  lang=l;
+  document.querySelectorAll('.lang-btn').forEach((b,i)=>b.classList.toggle('active',i===(l==='de'?0:1)));
+  const ids=['headline','subline','s1','s1s','name','tel','email','addr',
+    's2','s2s','room','r-bad','r-kue','r-vor','r-ter','r-woh','r-son',
+    'sqm','floor','f-eg','f-egs','f-og','f-ogs','stock','lift',
+    's3','s3s','cut','own','abd','soc','alt','tile','tiles',
+    'ti-b','ti-k','ti-p','ti-e','ti-es','s4','s4s','note','ok','ok2'];
+  ids.forEach(id=>{const el=document.getElementById('t-'+id);if(el)el.textContent=t(id);});
+  document.getElementById('btn-next').textContent=step===4?t('send'):t('next');
+  document.getElementById('btn-back').textContent=t('back');
+  if(step===4)buildSum();
+}
+
+function sel(el,group){
+  document.querySelectorAll(`[data-v][onclick*="'${group}'"]`).forEach(e=>e.classList.remove('sel'));
+  el.classList.add('sel');
+  sel_map[group]=el.dataset.v;
+}
+
+function showStock(show){document.getElementById('stock-wrap').style.display=show?'block':'none';}
+
+function on(id){return document.getElementById(id).classList.contains('on')}
+function val(id){return document.getElementById(id).value.trim()}
+
+function buildSum(){
+  const floor=sel_map['floor']||'—';
+  const stock=val('f-stock');
+  const lift=on('sw-lift');
+  const floorStr=floor==='Erdgeschoss'||floor==='Piano terra'?floor:(floor+(stock?' '+stock:'')+(lift?' ('+t('lift')+')':''));
+  const rows=[
+    [t('name'),val('f-name')||'—'],
+    [t('addr'),val('f-addr')||'—'],
+    [t('room'),sel_map['room']||'—'],
+    [t('sqm'),(val('f-sqm')||'—')+(val('f-sqm')?' m²':'')],
+    [t('floor'),floorStr],
+    [t('cut'),on('sw-cut')?t('ja'):t('nein')],
+    [t('tile'),sel_map['tile']||'—'],
+    [t('abd'),on('sw-abd')?t('ja'):t('nein')],
+    [t('soc'),on('sw-soc')?t('ja'):t('nein')],
+    [t('alt'),on('sw-alt')?t('ja'):t('nein')],
+  ];
+  document.getElementById('sum').innerHTML=rows.map(([k,v],i)=>
+    `<div class="sum-row"><span class="sum-key">${k}</span><span class="sum-val">${v}</span></div>`
+  ).join('');
+}
+
+function goToStep(n){
+  document.getElementById('s'+step).classList.remove('active');
+  document.getElementById('d'+step).className='dot done';
+  step=n;
+  document.getElementById('s'+step).classList.add('active');
+  for(let i=1;i<=4;i++){
+    const d=document.getElementById('d'+i);
+    if(i<step)d.className='dot done';
+    else if(i===step)d.className='dot active';
+    else d.className='dot';
+  }
+  document.getElementById('btn-back').style.display=step>1?'block':'none';
+  document.getElementById('btn-next').textContent=step===4?t('send'):t('next');
+  if(step===4)buildSum();
+  window.scrollTo(0,0);
+}
+
+async function submit(){
+  const angebot_nr='ANG-'+Date.now().toString(36).toUpperCase();
+  const kunde_id='K-'+Math.random().toString(36).slice(2,8).toUpperCase();
+  const stock=val('f-stock');
+  const payload={
+    angebot_nr, kunde_id, sprache:lang,
+    raum:sel_map['room']||null,
+    flaeche_m2:val('f-sqm')?parseFloat(val('f-sqm')):null,
+    stockwerk:sel_map['floor']||null,
+    stock_nr:stock?parseInt(stock):null,
+    aufzug:on('sw-lift'),
+    schneideplatz:on('sw-cut'),
+    eigene_fliesen:on('sw-own'),
+    abdichtung:on('sw-abd'),
+    sockelleisten:on('sw-soc'),
+    fliesen_klasse:sel_map['tile']||null,
+    notiz:val('f-note')||null,
+    status:'neu'
+  };
+  try{
+    const r=await fetch(`${SUPABASE_URL}/rest/v1/anfragen`,{
+      method:'POST',
+      headers:{'apikey':ANON_KEY,'Authorization':'Bearer '+ANON_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
+      body:JSON.stringify(payload)
+    });
+    document.getElementById('s4').classList.remove('active');
+    document.getElementById('s5').classList.add('active');
+    document.getElementById('nav-bar').style.display='none';
+    document.getElementById('t-nr').textContent='Ref: '+angebot_nr;
+  }catch(e){alert('Fehler beim Senden. Bitte versuchen Sie es erneut.');}
+}
+
+function next(){if(step===4){submit();}else{goToStep(step+1);}}
+function back(){if(step>1)goToStep(step-1);}
+</script>
+</body>
+</html>
